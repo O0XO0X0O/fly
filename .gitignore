@@ -1,0 +1,32 @@
+-- Fly Script for Roblox
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+local isFlying = false
+local flySpeed = 50 -- Adjust fly speed as needed
+
+-- Function to handle fly movement
+local function fly()
+    -- Check if the character exists
+    if not Character or not Character:IsDescendantOf(game) then
+        Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+        return
+    end
+
+    -- Check if the fly key is pressed
+    if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+        isFlying = not isFlying
+    end
+
+    -- Update character's velocity if flying
+    if isFlying then
+        Character.HumanoidRootPart.Velocity = Vector3.new(0, flySpeed, 0)
+    else
+        Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+    end
+end
+
+-- Connect fly function to render step
+game:GetService("RunService").RenderStepped:Connect(fly)
